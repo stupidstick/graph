@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+
+<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.stupidstick.fx.controller.GraphController">
+   <children>
+      <StackPane fx:id="sceneContainer" prefHeight="605.0" prefWidth="1000.0" />
+      <Button layoutX="266.0" layoutY="655.0" mnemonicParsing="false" onAction="#addVertex" prefHeight="25.0" prefWidth="124.0" text="add vertex" />
+      <TextField fx:id="nameField" layoutX="86.0" layoutY="655.0" />
+      <Label layoutX="27.0" layoutY="659.0" text="Name" />
+      <TextField fx:id="dataField" layoutX="86.0" layoutY="690.0" />
+      <Label layoutX="27.0" layoutY="694.0" text="Data" />
+      <TextField fx:id="fromField" layoutX="17.0" layoutY="751.0" prefHeight="25.0" prefWidth="97.0" />
+      <Label layoutX="32.0" layoutY="730.0" text="From" />
+      <TextField fx:id="toField" layoutX="138.0" layoutY="751.0" prefHeight="25.0" prefWidth="124.0" />
+      <Label layoutX="194.0" layoutY="730.0" text="to" />
+      <Button layoutX="266.0" layoutY="690.0" mnemonicParsing="false" onAction="#addEdge" prefHeight="25.0" prefWidth="124.0" text="add Edge" />
+      <Button layoutX="418.0" layoutY="655.0" mnemonicParsing="false" onAction="#removeVertex" prefHeight="25.0" prefWidth="124.0" text="remove vertex" />
+      <Button layoutX="418.0" layoutY="690.0" mnemonicParsing="false" onAction="#deleteEdge" prefHeight="25.0" prefWidth="124.0" text="delete edge" />
+      <Button layoutX="580.0" layoutY="655.0" mnemonicParsing="false" onAction="#ostav" prefHeight="25.0" prefWidth="124.0" text="ostav" />
+      <TextField fx:id="maxHeightField" layoutX="580.0" layoutY="690.0" prefHeight="25.0" prefWidth="124.0" />
+      <Label layoutX="710.0" layoutY="694.0" prefHeight="17.0" prefWidth="67.0" text="max height" />
+   </children>
+</AnchorPane>
