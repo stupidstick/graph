@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import ru.stupidstick.fx.graph.VisEdge;
 import ru.stupidstick.fx.graph.VisGraph;
 import ru.stupidstick.fx.graph.VisNode;
+import ru.stupidstick.graph.ListGraph;
 import ru.stupidstick.graph.MatrixGraph;
 import ru.stupidstick.graph.Vertex;
 
@@ -62,18 +63,10 @@ public class GraphController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             var vertex = graph.insertVertex(String.valueOf(i), String.valueOf(i));
             vertices.add(vertex);
         }
-        graph.insertEdge(vertices.get(0), vertices.get(1));
-        graph.insertEdge(vertices.get(1), vertices.get(2));
-        graph.insertEdge(vertices.get(2), vertices.get(3));
-        graph.insertEdge(vertices.get(3), vertices.get(1));
-        graph.insertEdge(vertices.get(3), vertices.get(4));
-        graph.insertEdge(vertices.get(4), vertices.get(5));
-        graph.insertEdge(vertices.get(5), vertices.get(6));
-        graph.insertEdge(vertices.get(6), vertices.get(4));
         updateBrowser();
     }
 
@@ -138,41 +131,16 @@ public class GraphController implements Initializable {
     }
 
     @FXML
-    public void ostav() {
-        int maxHeight = Integer.parseInt(maxHeightField.getText());
-        if (maxHeight < 2)
-            return;
-
-        Stage stage = new Stage();
-        Map<Vertex<String, String>, VisNode> vertexMap = new LinkedHashMap<>();
-
-        var ostavEdges = graph.findSpanningTreeWithHeightLimit(maxHeight);
-        ostavEdges.forEach(e -> {
-            vertexMap.put(e.getFrom(), new VisNode(new Random().nextInt(), e.getFrom().toString()));
-            vertexMap.put(e.getTo(), new VisNode(new Random().nextInt(), e.getTo().toString()));
-
-        });
-        VisGraph visGraph = new VisGraph();
-        visGraph.addNodes(vertexMap.values().toArray(VisNode[]::new));
-        visGraph.addEdges(ostavEdges.stream().map(edge -> new VisEdge(
-                vertexMap.get(edge.getFrom()),
-                vertexMap.get(edge.getTo()),
-                "to",
-                edge.getData()
-        )).toArray(VisEdge[]::new));
-
-        Browser browser = new Browser(visGraph);
-        Scene scene = new Scene(browser, 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public void countVertex() {
+        int count = Integer.parseInt(maxHeightField.getText());
+        Vertex<String, String> vertex = vertices.stream().filter(v -> v.getName().equals(nameField.getText())).findFirst().orElse(null);
+        System.out.println("Кол-во вершин: " + graph.countVertexByDistance(vertex, count));
     }
 
     private void updateBrowser() {
         browser = new Browser(graph.toVisGraph());
         sceneContainer.getChildren().setAll(browser);
     }
-
-
 
 }
 

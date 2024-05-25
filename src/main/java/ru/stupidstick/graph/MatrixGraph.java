@@ -6,12 +6,9 @@ import ru.stupidstick.fx.graph.VisNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Random;
@@ -70,8 +67,6 @@ public class MatrixGraph<N, D, W extends Comparable<W>> implements Graph<N, D, W
 
         return true;
     }
-
-
 
     @Override
     public Edge<N, D, W> insertEdge(Vertex<N, D> v1, Vertex<N, D> v2) {
@@ -172,6 +167,58 @@ public class MatrixGraph<N, D, W extends Comparable<W>> implements Graph<N, D, W
         return isDirected;
     }
 
+    public int countVertexByDistance(Vertex<N, D> baseVertex, int distance) {
+        if (!vertices.contains(baseVertex)) {
+            throw new IllegalArgumentException("Vertex not found");
+        }
+        if (distance <= 0) {
+            throw new IllegalArgumentException("Distance must be positive");
+        }
+        Set<Vertex<N, D>> vertexSet = new LinkedHashSet<>();
+
+        Queue<VertexDistance> queue = new LinkedList<>();
+        queue.add(new VertexDistance(baseVertex));
+
+        while (!queue.isEmpty()) {
+            var vertexDistance = queue.poll();
+            if (vertexDistance.distance == distance) {
+                vertexSet.add(vertexDistance.vertex);
+                continue;
+            }
+            queue.addAll(vertexDistance.next());
+        }
+
+        return vertexSet.size();
+    }
+
+    private class VertexDistance {
+        Vertex<N, D> vertex;
+        int distance = 0;
+        List<Vertex<N, D>> visited = new ArrayList<>();
+
+        public VertexDistance(Vertex<N, D> vertex) {
+            this.vertex = vertex;
+        }
+
+        public List<VertexDistance> next() {
+            List<VertexDistance> result = new ArrayList<>();
+            edges.get(vertices.indexOf(vertex)).forEach(edge -> {
+                if (edge != edgePlaceholder) {
+                    Vertex<N, D> nextVertex = edge.to;
+                    if (!visited.contains(nextVertex)) {
+                        visited.add(vertex);
+                        var next = new VertexDistance(nextVertex);
+                        next.distance = distance + 1;
+                        next.visited.addAll(visited);
+                        result.add(next);
+                    }
+                }
+            });
+
+            return result;
+        }
+    }
+
     private void insertVertex(Vertex<N, D> vertex) {
         vertices.add(vertex);
 
@@ -190,119 +237,6 @@ public class MatrixGraph<N, D, W extends Comparable<W>> implements Graph<N, D, W
         if (!isDirected) {
             edges.get(i2).set(i1, edge);
         }
-    }
-
-    // Method to find the minimum spanning tree with height limit
-    public List<Edge<N, D, W>> findSpanningTreeWithHeightLimit(int maxHeight) {
-        maxHeight--;
-        if (!isDirected) {
-            throw new UnsupportedOperationException("Only directed graphs are supported");
-        }
-
-        if (vertices.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        List<Edge<N, D, W>> spanningTree = new ArrayList<>();
-        Set<Vertex<N, D>> visited = new LinkedHashSet<>();
-        Queue<Edge<N, D, W>> pq = new LinkedList<>();
-
-        // Add all edges of the starting vertex to the priority queue
-        Vertex<N, D> startVertex = vertices.get(0);
-        visited.add(startVertex);
-        pq.addAll(getOutgoingEdges(startVertex));
-
-        // Prim's algorithm to create a minimum spanning tree
-        while (!pq.isEmpty() && spanningTree.size() < vertices.size() - 1) {
-            Edge<N, D, W> edge = pq.poll();
-            Vertex<N, D> to = edge.getTo();
-
-            if (visited.contains(to)) {
-                continue;
-            }
-
-            spanningTree.add(edge);
-            visited.add(to);
-            pq.addAll(getOutgoingEdges(to));
-        }
-
-        // Adjust tree to fit within the height limit
-        while (!isHeightWithinLimit(spanningTree, startVertex, maxHeight)) {
-            adjustHeight(spanningTree, startVertex, maxHeight);
-        }
-
-        return spanningTree;
-    }
-
-    private List<Edge<N, D, W>> getOutgoingEdges(Vertex<N, D> vertex) {
-        List<Edge<N, D, W>> outgoingEdges = new ArrayList<>();
-        int index = vertices.indexOf(vertex);
-        for (int i = 0; i < vertices.size(); i++) {
-            Edge<N, D, W> edge = edges.get(index).get(i);
-            if (edge != edgePlaceholder) {
-                outgoingEdges.add(edge);
-            }
-        }
-        return outgoingEdges;
-    }
-
-    private boolean isHeightWithinLimit(List<Edge<N, D, W>> spanningTree, Vertex<N, D> startVertex, int maxHeight) {
-        Map<Vertex<N, D>, List<Vertex<N, D>>> tree = buildTreeFromEdges(spanningTree);
-        return getHeight(tree, startVertex) <= maxHeight;
-    }
-
-    private Map<Vertex<N, D>, List<Vertex<N, D>>> buildTreeFromEdges(List<Edge<N, D, W>> edges) {
-        Map<Vertex<N, D>, List<Vertex<N, D>>> tree = new LinkedHashMap<>();
-        for (Edge<N, D, W> edge : edges) {
-            tree.computeIfAbsent(edge.getFrom(), k -> new ArrayList<>()).add(edge.getTo());
-        }
-        return tree;
-    }
-
-    private int getHeight(Map<Vertex<N, D>, List<Vertex<N, D>>> tree, Vertex<N, D> vertex) {
-        if (!tree.containsKey(vertex)) {
-            return 0;
-        }
-        int height = 0;
-        for (Vertex<N, D> child : tree.get(vertex)) {
-            height = Math.max(height, getHeight(tree, child) + 1);
-        }
-        return height;
-    }
-
-    private List<Edge<N, D, W>> adjustHeight(List<Edge<N, D, W>> spanningTree, Vertex<N, D> startVertex, int maxHeight) {
-        Map<Vertex<N, D>, List<Vertex<N, D>>> tree = buildTreeFromEdges(spanningTree);
-        List<Edge<N, D, W>> additionalEdges = new ArrayList<>();
-
-        Queue<Vertex<N, D>> queue = new LinkedList<>();
-        Map<Vertex<N, D>, Integer> depth = new LinkedHashMap<>();
-        queue.add(startVertex);
-        depth.put(startVertex, 0);
-
-        while (!queue.isEmpty()) {
-            Vertex<N, D> current = queue.poll();
-            int currentDepth = depth.get(current);
-            if (currentDepth < maxHeight) {
-                for (Vertex<N, D> neighbor : tree.getOrDefault(current, Collections.emptyList())) {
-                    depth.put(neighbor, currentDepth + 1);
-                    queue.add(neighbor);
-                }
-            } else {
-                for (Vertex<N, D> neighbor : tree.getOrDefault(current, Collections.emptyList())) {
-                    Edge<N, D, W> newEdge = new Edge<>(startVertex, neighbor);
-                    var oldEdge = spanningTree.stream().filter(edge -> Objects.equals(edge.getFrom(), current) && Objects.equals(edge.getTo(), neighbor)).findFirst();
-                    oldEdge.ifPresent(spanningTree::remove);
-                    additionalEdges.add(newEdge);
-                }
-            }
-        }
-
-        spanningTree.addAll(additionalEdges);
-        return spanningTree;
-    }
-
-    private Edge<N, D, W> findNewEdge(List<Edge<N, D, W>> spanningTree, Vertex<N, D> from, Vertex<N, D> to) {
-        return null;
     }
 
     private static class MatrixGraphIterator<T> implements Iterator<T> {
