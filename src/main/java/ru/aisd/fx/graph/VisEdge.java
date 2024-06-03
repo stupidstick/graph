@@ -1,7 +1,7 @@
-package ru.stupidstick.fx.graph;
+package ru.aisd.fx.graph;
 
 import com.google.gson.GsonBuilder;
-import ru.stupidstick.fx.jsonutils.VisEdgeAdapter;
+import ru.aisd.fx.jsonutils.VisEdgeAdapter;
 
 
 public class VisEdge {

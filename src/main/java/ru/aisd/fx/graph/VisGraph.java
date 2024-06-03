@@ -1,7 +1,7 @@
-package ru.stupidstick.fx.graph;
+package ru.aisd.fx.graph;
 
 import com.google.gson.Gson;
-import ru.stupidstick.fx.jsonutils.VisEdgeAdapter;
+import ru.aisd.fx.jsonutils.VisEdgeAdapter;
 
 import java.io.BufferedWriter;
 import java.io.File;

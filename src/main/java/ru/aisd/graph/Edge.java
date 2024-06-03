@@ -1,4 +1,4 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
 public class Edge<N, D, W extends Comparable<W>> {
 

@@ -1,4 +1,4 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
 public interface Iterator<T> {
 

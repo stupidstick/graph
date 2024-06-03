@@ -1,4 +1,4 @@
-package ru.stupidstick.fx.graph;
+package ru.aisd.fx.graph;
 
 import com.google.gson.Gson;
 

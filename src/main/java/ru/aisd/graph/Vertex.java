@@ -1,4 +1,4 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
 public class Vertex<N, D> {
 

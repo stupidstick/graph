@@ -1,4 +1,4 @@
-package ru.stupidstick.fx.gui;
+package ru.aisd.fx.gui;
 
 
 import javafx.application.Application;
@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.stupidstick.Main;
+import ru.aisd.Main;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ public class GraphView extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // create the scene
-        stage.setTitle("Network view");
+        stage.setTitle("Graph RGR");
 
         Parent root = FXMLLoader.load(Main.class.getResource("/graph.fxml"));
 

@@ -1,6 +1,6 @@
-package ru.stupidstick;
+package ru.aisd;
 
-import ru.stupidstick.fx.gui.GraphView;
+import ru.aisd.fx.gui.GraphView;
 
 public class Main{
     public static void main(String[] args) {

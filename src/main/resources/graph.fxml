@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 
-<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.stupidstick.fx.controller.GraphController">
+<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.aisd.fx.controller.GraphController">
    <children>
       <StackPane fx:id="sceneContainer" prefHeight="605.0" prefWidth="1000.0" />
       <Button layoutX="266.0" layoutY="655.0" mnemonicParsing="false" onAction="#addVertex" prefHeight="25.0" prefWidth="124.0" text="add vertex" />
@@ -22,8 +22,8 @@
       <Button layoutX="266.0" layoutY="690.0" mnemonicParsing="false" onAction="#addEdge" prefHeight="25.0" prefWidth="124.0" text="add Edge" />
       <Button layoutX="418.0" layoutY="655.0" mnemonicParsing="false" onAction="#removeVertex" prefHeight="25.0" prefWidth="124.0" text="remove vertex" />
       <Button layoutX="418.0" layoutY="690.0" mnemonicParsing="false" onAction="#deleteEdge" prefHeight="25.0" prefWidth="124.0" text="delete edge" />
-      <Button layoutX="580.0" layoutY="655.0" mnemonicParsing="false" onAction="#ostav" prefHeight="25.0" prefWidth="124.0" text="ostav" />
-      <TextField fx:id="maxHeightField" layoutX="580.0" layoutY="690.0" prefHeight="25.0" prefWidth="124.0" />
+      <Button layoutX="580.0" layoutY="655.0" mnemonicParsing="false" onAction="#findCycle" prefHeight="25.0" prefWidth="124.0" text="ostav" />
+      <TextField fx:id="lengthField" layoutX="580.0" layoutY="690.0" prefHeight="25.0" prefWidth="124.0" />
       <Label layoutX="710.0" layoutY="694.0" prefHeight="17.0" prefWidth="67.0" text="max height" />
    </children>
 </AnchorPane>

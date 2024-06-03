@@ -1,7 +1,8 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
-import ru.stupidstick.fx.graph.VisGraph;
+import ru.aisd.fx.graph.VisGraph;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface Graph<N, D, W extends Comparable<W>> {
@@ -23,6 +24,8 @@ public interface Graph<N, D, W extends Comparable<W>> {
     Iterator<Edge<N, D, W>> edgeIterator();
 
     Iterator<Edge<N, D, W>> edgeIterator(Vertex<N, D> vertex);
+
+    List<Edge<N, D, W>> findCycle(Vertex<N, D> vertex, int length);
 
     boolean isDirected();
 }

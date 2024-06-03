@@ -1,4 +1,4 @@
-package ru.stupidstick.fx.controller;
+package ru.aisd.fx.controller;
 
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -13,11 +13,11 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
-import ru.stupidstick.fx.graph.VisEdge;
-import ru.stupidstick.fx.graph.VisGraph;
-import ru.stupidstick.fx.graph.VisNode;
-import ru.stupidstick.graph.MatrixGraph;
-import ru.stupidstick.graph.Vertex;
+import ru.aisd.fx.graph.VisEdge;
+import ru.aisd.fx.graph.VisGraph;
+import ru.aisd.fx.graph.VisNode;
+import ru.aisd.graph.MatrixGraph;
+import ru.aisd.graph.Vertex;
 
 import java.io.File;
 import java.net.URL;
@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class GraphController implements Initializable {
 
-    private static final boolean isDirected = false;
+    private static final boolean isDirected = true;
 
     @FXML
     private Pane sceneContainer;
@@ -53,13 +53,13 @@ public class GraphController implements Initializable {
     private TextField toField;
 
     @FXML
-    private TextField maxHeightField;
+    private TextField lengthField;
 
     private Browser browser;
 
     private List<Vertex<String, String>> vertices = new ArrayList<>();
 
-    private MatrixGraph<String, String, String> graph = new MatrixGraph<>(false);
+    private MatrixGraph<String, String, String> graph = new MatrixGraph<>(isDirected);
 
 
     @Override
@@ -140,8 +140,8 @@ public class GraphController implements Initializable {
     }
 
     @FXML
-    public void ostav() {
-        int maxHeight = Integer.parseInt(maxHeightField.getText());
+    public void findCycle() {
+        int maxHeight = Integer.parseInt(lengthField.getText());
         String vertexName = nameField.getText();
         Vertex<String, String> baseVertex = vertices.stream().filter(v -> v.getName().equals(vertexName)).findFirst().orElse(null);
 
@@ -151,7 +151,7 @@ public class GraphController implements Initializable {
         Stage stage = new Stage();
         Map<Vertex<String, String>, VisNode> vertexMap = new LinkedHashMap<>();
 
-        var ostavEdges = graph.findCycleByLength(baseVertex, maxHeight);
+        var ostavEdges = graph.findCycle(baseVertex, maxHeight);
         ostavEdges.forEach(e -> {
             vertexMap.put(e.getFrom(), new VisNode(new Random().nextInt(), e.getFrom().toString()));
             vertexMap.put(e.getTo(), new VisNode(new Random().nextInt(), e.getTo().toString()));
@@ -171,6 +171,7 @@ public class GraphController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
 
     private void updateBrowser() {
         browser = new Browser(graph.toVisGraph());

@@ -1,8 +1,8 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
-import ru.stupidstick.fx.graph.VisEdge;
-import ru.stupidstick.fx.graph.VisGraph;
-import ru.stupidstick.fx.graph.VisNode;
+import ru.aisd.fx.graph.VisEdge;
+import ru.aisd.fx.graph.VisGraph;
+import ru.aisd.fx.graph.VisNode;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -149,6 +149,11 @@ public class ListGraph<N, D, W extends Comparable<W>> implements Graph<N, D, W> 
     @Override
     public Iterator<Edge<N, D, W>> edgeIterator(Vertex<N, D> vertex) {
         return new GraphIterator<>(vertices.get(vertex));
+    }
+
+    @Override
+    public List<Edge<N, D, W>> findCycle(Vertex<N, D> vertex, int length) {
+        return new MatrixGraph<>(this).findCycle(vertex, length);
     }
 
     public static class GraphIterator<T> implements Iterator<T> {

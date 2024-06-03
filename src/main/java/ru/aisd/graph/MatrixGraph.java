@@ -1,17 +1,14 @@
-package ru.stupidstick.graph;
+package ru.aisd.graph;
 
-import ru.stupidstick.fx.graph.VisEdge;
-import ru.stupidstick.fx.graph.VisGraph;
-import ru.stupidstick.fx.graph.VisNode;
+import ru.aisd.fx.graph.VisEdge;
+import ru.aisd.fx.graph.VisGraph;
+import ru.aisd.fx.graph.VisNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Random;
@@ -192,7 +189,8 @@ public class MatrixGraph<N, D, W extends Comparable<W>> implements Graph<N, D, W
         }
     }
 
-    public List<Edge<N, D, W>> findCycleByLength(Vertex<N, D> baseVertex, int length) {
+    @Override
+    public List<Edge<N, D, W>> findCycle(Vertex<N, D> baseVertex, int length) {
         if (!vertices.contains(baseVertex)) {
             throw new IllegalArgumentException("Vertex not found");
         }

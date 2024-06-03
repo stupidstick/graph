@@ -1,7 +1,7 @@
-package ru.stupidstick.fx.jsonutils;
+package ru.aisd.fx.jsonutils;
 
 import com.google.gson.*;
-import ru.stupidstick.fx.graph.VisEdge;
+import ru.aisd.fx.graph.VisEdge;
 
 
 import java.lang.reflect.Type;
