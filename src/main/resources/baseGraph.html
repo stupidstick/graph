@@ -20,6 +20,40 @@
 <script type="text/javascript">
     // create a network
     var container = document.getElementById('mynetwork');
+
+    var options = {
+        edges: {
+            chosen: false,
+            arrows: {
+                to: {
+                    scaleFactor: 0.5
+                },
+                from: {
+                    scaleFactor: 0.5
+                }
+            },
+            font: {
+                color: '#000000', // Цвет текста
+                size: 15, // Размер шрифта
+                face: 'Courier new' // Шрифт
+            }
+        },
+        nodes: {
+            chosen: false,
+            shape: 'box',
+            color: {
+                background: 'white', // Цвет фона узлов
+                border: 'black', // Цвет границы узлов
+            },
+            font: {
+                color: '#000000', // Цвет текста
+                size: 15, // Размер шрифта
+                face: 'Courier new' // Шрифт
+            }
+        },
+
+    };
+
     // create an array with nodes
     var nodes = new vis.DataSet();
 
@@ -30,7 +64,7 @@
         edges: edges
     };
 
-    var options = {};
+    //var options = {};
     var network = new vis.Network(container, data, options);
 
     function setTheData(nodesArray,edgesArray) {

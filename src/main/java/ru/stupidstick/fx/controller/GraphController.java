@@ -35,6 +35,8 @@ import java.util.UUID;
 
 public class GraphController implements Initializable {
 
+    private static final boolean isDirected = false;
+
     @FXML
     private Pane sceneContainer;
 
@@ -57,7 +59,7 @@ public class GraphController implements Initializable {
 
     private List<Vertex<String, String>> vertices = new ArrayList<>();
 
-    private MatrixGraph<String, String, String> graph = new MatrixGraph<>(true);
+    private MatrixGraph<String, String, String> graph = new MatrixGraph<>(false);
 
 
     @Override
@@ -140,13 +142,16 @@ public class GraphController implements Initializable {
     @FXML
     public void ostav() {
         int maxHeight = Integer.parseInt(maxHeightField.getText());
-        if (maxHeight < 2)
+        String vertexName = nameField.getText();
+        Vertex<String, String> baseVertex = vertices.stream().filter(v -> v.getName().equals(vertexName)).findFirst().orElse(null);
+
+        if (baseVertex == null || maxHeight < 2)
             return;
 
         Stage stage = new Stage();
         Map<Vertex<String, String>, VisNode> vertexMap = new LinkedHashMap<>();
 
-        var ostavEdges = graph.findSpanningTreeWithHeightLimit(maxHeight);
+        var ostavEdges = graph.findCycleByLength(baseVertex, maxHeight);
         ostavEdges.forEach(e -> {
             vertexMap.put(e.getFrom(), new VisNode(new Random().nextInt(), e.getFrom().toString()));
             vertexMap.put(e.getTo(), new VisNode(new Random().nextInt(), e.getTo().toString()));
@@ -157,7 +162,7 @@ public class GraphController implements Initializable {
         visGraph.addEdges(ostavEdges.stream().map(edge -> new VisEdge(
                 vertexMap.get(edge.getFrom()),
                 vertexMap.get(edge.getTo()),
-                "to",
+                (isDirected ? "to" : ""),
                 edge.getData()
         )).toArray(VisEdge[]::new));
 
